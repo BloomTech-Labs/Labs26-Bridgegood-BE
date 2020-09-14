@@ -32,7 +32,7 @@ const authRequired = async (req, res, next) => {
         if (user) {
           req.user = user;
         } else {
-          throw new Error('Unable to process idToken');
+          throw new Error('Unable to create or find user.');
         }
         next();
       });

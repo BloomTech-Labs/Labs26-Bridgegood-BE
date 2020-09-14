@@ -1,43 +1,43 @@
 const db = require('../../data/db-config');
 
 const getAllUsers = async () =>
-  await db('users as u').select(
-    'u.id as user_id',
-    'u.first_name',
-    'u.last_name',
-    'u.school',
-    'u.bg_username',
-    'u.email',
-    'u.phone',
-    'u.created_at'
+  await db('users').select(
+    'id',
+    'first_name',
+    'last_name',
+    'school',
+    'bg_username',
+    'email',
+    'phone',
+    'created_at'
   );
 
 const findUserByFilter = async (filter) =>
-  await db('users as u')
+  await db('users')
     .where(filter)
     .select(
-      'u.id as user_id',
-      'u.first_name',
-      'u.last_name',
-      'u.school',
-      'u.bg_username',
-      'u.email',
-      'u.phone',
-      'u.created_at'
+      'id',
+      'first_name',
+      'last_name',
+      'school',
+      'bg_username',
+      'email',
+      'phone',
+      'created_at'
     );
 
 const findUserByID = async (id) =>
-  await db('users as u')
+  await db('users')
     .where({ id })
     .select(
-      'u.id as user_id',
-      'u.first_name',
-      'u.last_name',
-      'u.school',
-      'u.bg_username',
-      'u.email',
-      'u.phone',
-      'u.created_at'
+      'id',
+      'first_name',
+      'last_name',
+      'school',
+      'bg_username',
+      'email',
+      'phone',
+      'created_at'
     )
     .first();
 
@@ -79,7 +79,7 @@ const findOrCreateUser = async (userObj) => {
     return foundUser;
   } else {
     return await createUser(userObj).then((newUser) => {
-      return newUser ? newUser[0] : newUser;
+      return newUser ? newUser[0] : null;
     });
   }
 };
