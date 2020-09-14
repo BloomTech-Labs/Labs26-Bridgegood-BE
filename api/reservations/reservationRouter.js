@@ -168,12 +168,9 @@ router.post('/', authRequired, async (req, res) => {
       await Reservations.findReservationByID(id).then(async (usr) => {
         if (usr == undefined) {
           // User not found so lets insert it
-          await Reservations.createReservation(
-            reservation
-          ).then((reservation) =>
-            res
-              .status(200)
-              .json({
+          await Reservations.createReservation(reservation).then(
+            (reservation) =>
+              res.status(200).json({
                 message: 'Reservation successfully created.',
                 reservation: reservation[0],
               })
@@ -234,12 +231,10 @@ router.put('/', authRequired, (req, res) => {
       .then(
         Reservations.updateReservation(id, reservation)
           .then((updated) => {
-            res
-              .status(200)
-              .json({
-                message: 'Reservation updated.',
-                reservation: updated[0],
-              });
+            res.status(200).json({
+              message: 'Reservation updated.',
+              reservation: updated[0],
+            });
           })
           .catch((err) => {
             res.status(500).json({
