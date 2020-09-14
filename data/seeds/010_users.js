@@ -11,6 +11,7 @@ const users = [...new Array(5)].map((i, idx) => {
     school: `Lambda School`,
     bg_username: idx == 0 ? 'Lambda-School' : `${firstName}-${lastName}`,
     phone: `${faker.phone.phoneNumber()}`,
+    role_id: 2,
     password: bc.hashSync(
       idx == 0 ? 'password' : `${firstName}${faker.random * 500}`,
       12
