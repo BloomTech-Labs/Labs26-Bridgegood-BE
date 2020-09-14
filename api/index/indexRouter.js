@@ -5,14 +5,14 @@ var router = express.Router();
  * @swagger
  * /:
  *  get:
- *    description: root path returning status
+ *    description: Root endpoint, returns the status of the API.
  *    tags:
- *      - status
+ *      - Status
  *    produces:
- *      - applicaiton/json
+ *      - application/json
  *    responses:
  *      200:
- *        description: status is up
+ *        description: Returns up status.
  *        content:
  *          application/json:
  *            schema:

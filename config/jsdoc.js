@@ -2,10 +2,9 @@ module.exports = {
   definition: {
     openapi: '3.0.1',
     info: {
-      title: 'Lambda Labs Starter API',
+      title: 'BridgeGood API Documentation',
       version: '1.0.0',
-      description:
-        'A basic API server to act as a starting point for Labs projects',
+      description: 'BridgeGood - Documentation for the API.',
       license: {
         name: 'MIT',
         url: 'https://en.wikipedia.org/wiki/MIT_License',
@@ -13,22 +12,18 @@ module.exports = {
     },
     tags: [
       {
-        name: 'status',
-        description: 'Everything about your status',
+        name: 'Status',
+        description: 'Status of the API',
       },
       {
-        name: 'profile',
-        description: 'Operations for profile',
+        name: 'Users',
+        description: 'Documentation for the endpoints related to Users.',
       },
       {
-        name: 'data',
-        description: 'Operations for data science service',
+        name: 'Reservations',
+        description: 'Documentation for the endpoints related to Reservations.',
       },
     ],
-    externalDocs: {
-      description: 'Data Science scaffold service docs',
-      url: 'https://ds.labsscaffolding.dev/',
-    },
     components: {
       securitySchemes: {
         okta: {
@@ -42,7 +37,7 @@ module.exports = {
           description: 'Access token is missing or invalid',
         },
         BadRequest: {
-          description: 'Bad request. profile already exists',
+          description: 'Bad request.',
         },
         NotFound: {
           description: 'Not Found',

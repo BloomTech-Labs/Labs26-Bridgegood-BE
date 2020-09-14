@@ -1,10 +1,10 @@
 const createError = require('http-errors');
 const OktaJwtVerifier = require('@okta/jwt-verifier');
 const oktaVerifierConfig = require('../../config/okta');
-const Profiles = require('../profile/profileModel');
+const Users = require('../users/userModel');
 const oktaJwtVerifier = new OktaJwtVerifier(oktaVerifierConfig.config);
 
-const makeProfileObj = (claims) => {
+const makeUserObj = (claims) => {
   return {
     id: claims.sub,
     email: claims.email,
@@ -14,7 +14,7 @@ const makeProfileObj = (claims) => {
 /**
  * A simple middleware that asserts valid Okta idToken and sends 401 responses
  * if the token is not present or fails validation. If the token is valid its
- * contents are attached to req.profile
+ * contents are attached to req.user
  */
 const authRequired = async (req, res, next) => {
   try {
@@ -27,12 +27,12 @@ const authRequired = async (req, res, next) => {
     oktaJwtVerifier
       .verifyAccessToken(idToken, oktaVerifierConfig.expectedAudience)
       .then(async (data) => {
-        const jwtUserObj = makeProfileObj(data.claims);
-        const profile = await Profiles.findOrCreateProfile(jwtUserObj);
-        if (profile) {
-          req.profile = profile;
+        const jwtUserObj = makeUserObj(data.claims);
+        const user = await Users.findOrCreateUser(jwtUserObj);
+        if (user) {
+          req.user = user;
         } else {
-          throw new Error('Unable to process idToken');
+          throw new Error('Unable to create or find user.');
         }
         next();
       });
