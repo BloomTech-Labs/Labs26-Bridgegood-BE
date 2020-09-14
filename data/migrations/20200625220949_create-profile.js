@@ -1,5 +1,10 @@
 exports.up = (knex) => {
   return knex.schema
+    .createTable('roles', (tbl) => {
+      tbl.increments();
+      tbl.string('name');
+      tbl.timestamps(true, true);
+    })
     .createTable('users', (tbl) => {
       tbl.increments();
       tbl.string('first_name').notNullable();
@@ -9,6 +14,13 @@ exports.up = (knex) => {
       tbl.string('email').notNullable().unique();
       tbl.string('phone').notNullable().unique();
       tbl.string('password').notNullable();
+      tbl
+        .integer('role_id')
+        .notNullable()
+        .references('id')
+        .inTable('roles')
+        .onDelete('CASCADE') // do not cascade deletes
+        .onUpdate('CASCADE');
       tbl.timestamps(true, true);
     })
     .createTable('rooms', (tbl) => {
@@ -19,6 +31,7 @@ exports.up = (knex) => {
     .createTable('donations', (tbl) => {
       tbl.increments();
       tbl.string('amount');
+      tbl.timestamps(true, true);
       tbl
         .integer('user_id')
         .unsigned()
@@ -32,6 +45,7 @@ exports.up = (knex) => {
       tbl.increments();
       tbl.string('datetime');
       tbl.string('duration');
+      tbl.timestamps(true, true);
       // RoomID and UserID
       tbl
         .integer('user_id')
@@ -57,5 +71,6 @@ exports.down = (knex) => {
     .dropTableIfExists('donations')
     .dropTableIfExists('reservations')
     .dropTableIfExists('rooms')
-    .dropTableIfExists('users');
+    .dropTableIfExists('users')
+    .dropTableIfExists('roles');
 };
