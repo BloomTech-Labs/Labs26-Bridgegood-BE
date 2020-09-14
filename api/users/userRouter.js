@@ -134,12 +134,12 @@ router.get('/', authRequired, function (req, res) {
  */
 router.get('/:id', authRequired, function (req, res) {
   const id = String(req.params.id);
-  Profiles.findById(id)
-    .then((profile) => {
-      if (profile) {
-        res.status(200).json(profile);
+  Users.findUserByID(id)
+    .then((user) => {
+      if (user) {
+        res.status(200).json(user);
       } else {
-        res.status(404).json({ error: 'ProfileNotFound' });
+        res.status(404).json({ error: 'UserNotFound' });
       }
     })
     .catch((err) => {

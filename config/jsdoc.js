@@ -19,6 +19,10 @@ module.exports = {
         name: 'Users',
         description: 'Documentation for the endpoints related to Users.',
       },
+      {
+        name: 'Reservations',
+        description: 'Documentation for the endpoints related to Reservations.',
+      },
     ],
     components: {
       securitySchemes: {
