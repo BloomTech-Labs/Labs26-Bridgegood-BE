@@ -6,7 +6,7 @@ exports.up = (knex) => {
       tbl.timestamps(true, true);
     })
     .createTable('users', (tbl) => {
-      tbl.increments();
+      tbl.string('id');
       tbl.string('first_name').notNullable();
       tbl.string('last_name').notNullable();
       tbl.string('school').notNullable();
@@ -24,12 +24,12 @@ exports.up = (knex) => {
       tbl.timestamps(true, true);
     })
     .createTable('rooms', (tbl) => {
-      tbl.increments();
+      tbl.string('id');
       tbl.string('roomtype');
       tbl.string('time_slots_taken');
     })
     .createTable('donations', (tbl) => {
-      tbl.increments();
+      tbl.string('id');
       tbl.string('amount');
       tbl.timestamps(true, true);
       tbl
@@ -42,7 +42,7 @@ exports.up = (knex) => {
         .onUpdate('CASCADE');
     })
     .createTable('reservations', (tbl) => {
-      tbl.increments();
+      tbl.string('id');
       tbl.string('datetime');
       tbl.string('duration');
       tbl.timestamps(true, true);

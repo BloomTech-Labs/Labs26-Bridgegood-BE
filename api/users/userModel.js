@@ -1,4 +1,5 @@
 const db = require('../../data/db-config');
+const { v4: uuidv4 } = require('uuid');
 
 const getAllUsers = async () =>
   await db('users').select(
@@ -43,7 +44,10 @@ const findUserByID = async (id) =>
 
 const createUser = async (user) =>
   db('users')
-    .insert(user)
+    .insert({
+      ...user,
+      id: uuidv4(),
+    })
     .returning([
       'id',
       'first_name',
