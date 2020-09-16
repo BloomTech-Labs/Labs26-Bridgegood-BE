@@ -31,7 +31,7 @@ const router = express.Router();
  *    security:
  *      - okta: []
  *    tags:
- *      - Donation
+ *      - Donations
  *    responses:
  *      200:
  *        description: Successful response with a list of donations.
