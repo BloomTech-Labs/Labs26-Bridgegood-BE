@@ -155,9 +155,10 @@ router.post('/', authRequired, async (req, res) => {
         if (d == undefined) {
           // Donation not found so lets insert it
           await Donations.createDonation(donation).then((donation) =>
-            res
-              .status(200)
-              .json({ message: 'Donation successfully created.', donation: donation[0] })
+            res.status(200).json({
+              message: 'Donation successfully created.',
+              donation: donation[0],
+            })
           );
         } else {
           res.status(400).json({ message: 'Donation already exists.' });
@@ -269,7 +270,9 @@ router.delete('/:id', authRequired, (req, res) => {
   try {
     Donations.findDonationsByID(id).then((donation) => {
       Donations.removeDonation(donation.id).then(() => {
-        res.status(200).json({ message: `Donation '${id}' was deleted.`, donation });
+        res
+          .status(200)
+          .json({ message: `Donation '${id}' was deleted.`, donation });
       });
     });
   } catch (err) {

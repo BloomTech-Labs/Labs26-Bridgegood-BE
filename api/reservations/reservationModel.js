@@ -7,7 +7,9 @@ const findReservationByFilter = async (filter) =>
 const findReservationByID = async (id) =>
   await db('reservations').where({ id }).first();
 const createReservation = async (reservation) =>
-  await db('reservations').insert({ ...reservation, id: uuidv4() }).returning('*');
+  await db('reservations')
+    .insert({ ...reservation, id: uuidv4() })
+    .returning('*');
 const updateReservation = async (id, reservation) =>
   await db('reservations')
     .where({ id })
