@@ -23,7 +23,6 @@ Please delete options that are not relevant.
 - - [ ] What was tested?
 - [ ] No
 
-
 # Checklist
 
 - [ ] My code follows the style guidelines of this project

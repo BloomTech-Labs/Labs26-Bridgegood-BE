@@ -1,4 +1,5 @@
 const db = require('../../data/db-config');
+const { v4: uuidv4 } = require('uuid');
 
 const getAllReservations = async () => await db('reservations');
 const findReservationByFilter = async (filter) =>
@@ -6,7 +7,9 @@ const findReservationByFilter = async (filter) =>
 const findReservationByID = async (id) =>
   await db('reservations').where({ id }).first();
 const createReservation = async (reservation) =>
-  await db('reservations').insert(reservation).returning('*');
+  await db('reservations')
+    .insert({ ...reservation, id: uuidv4() })
+    .returning('*');
 const updateReservation = async (id, reservation) =>
   await db('reservations')
     .where({ id })

@@ -241,7 +241,7 @@ router.post('/', authRequired, async (req, res) => {
  *                  type: string
  *                  description: A message about request's result.
  *                  example: User successfully updated.
- *                profile:
+ *                user:
  *                  $ref: '#/components/schemas/User'
  */
 router.put('/', authRequired, (req, res) => {
@@ -265,7 +265,7 @@ router.put('/', authRequired, (req, res) => {
       )
       .catch((err) => {
         res.status(404).json({
-          message: `Could not find profile '${id}'`,
+          message: `Could not find user '${id}'`,
           error: err.message,
         });
       });
@@ -298,7 +298,7 @@ router.put('/', authRequired, (req, res) => {
  *                  type: string
  *                  description: A message about the request's result.
  *                  example: User '2' was deleted.
- *                profile:
+ *                user:
  *                  $ref: '#/components/schemas/User'
  */
 router.delete('/:id', authRequired, (req, res) => {
@@ -306,7 +306,7 @@ router.delete('/:id', authRequired, (req, res) => {
   try {
     Users.findUserByID(id).then((user) => {
       Users.removeUser(user.id).then(() => {
-        res.status(200).json({ message: `Profile '${id}' was deleted.`, user });
+        res.status(200).json({ message: `User '${id}' was deleted.`, user });
       });
     });
   } catch (err) {

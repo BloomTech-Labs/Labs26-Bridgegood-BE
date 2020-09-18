@@ -21,12 +21,13 @@ const authRequired = async (req, res, next) => {
     const authHeader = req.headers.authorization || '';
     const match = authHeader.match(/Bearer (.+)/);
 
-    if (!match) throw new Error('Missing idToken');
+    if (!match) throw new Error('Invalid Authorization Token.');
 
-    const idToken = match[1];
+    const token = match[1];
     oktaJwtVerifier
-      .verifyAccessToken(idToken, oktaVerifierConfig.expectedAudience)
+      .verifyAccessToken(token, oktaVerifierConfig.expectedAudience)
       .then(async (data) => {
+        console.log(data);
         const jwtUserObj = makeUserObj(data.claims);
         const user = await Users.findOrCreateUser(jwtUserObj);
         if (user) {
