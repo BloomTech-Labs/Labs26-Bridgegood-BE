@@ -1,6 +1,9 @@
 const db = require('../../data/db-config');
 
 const getAllReservations = async () => await db('reservations');
+const getAllReservationsWithRooms = async () => await db('reservations as res')
+  .join('rooms', 'rooms.id', '=', 'res.room_id')
+  .select('*', 'res.id as id');
 const findReservationByFilter = async (filter) =>
   await db('reservations').where(filter);
 const findReservationByID = async (id) =>
@@ -18,6 +21,7 @@ const removeReservation = async (id) =>
 
 module.exports = {
   getAllReservations,
+  getAllReservationsWithRooms,
   findReservationByFilter,
   findReservationByID,
   createReservation,
