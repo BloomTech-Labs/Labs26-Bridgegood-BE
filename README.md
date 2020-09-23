@@ -22,7 +22,10 @@ BridgeGood is a co-op space for designers local to the Oakland, California area.
 - `DATABASE_URL` - connection string for postgres database
 - `OKTA_URL_ISSUER` - The complete issuer URL for verifying okta access tokens. `https://example.okta.com/oauth2/default`
 - `OKTA_CLIENT_ID` - the okta client ID.
-  
+
+### API Documentation
+- All of the documentation on the up to date, and usuable, endpoints for the API can be found at `https://bridgegood-api.herokuapp.com/api-docs/`. 
+
 ## Meet the Team
 Name | Role
 -|-
