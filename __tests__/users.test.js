@@ -116,7 +116,7 @@ describe('User Endpoints', () => {
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe(
-        "Profile 'd22b9b36-f699-4f46-bd01-6918772b4f52' was deleted."
+        "User 'd22b9b36-f699-4f46-bd01-6918772b4f52' was deleted."
       );
     });
   });
