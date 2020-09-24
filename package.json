@@ -12,7 +12,7 @@
     "format:win": "npx prettier --write \"**/*.{js,jsx,json,yml,yaml,css,md}\"",
     "format:mac": "npx prettier --write \"**/*.+(js,jsx,json,yml,yaml,css,md)\"",
     "knex": "npx knex --knexfile config/knexfile.js",
-    "tests": "npx cypress open",
+    "tests": "npx jest",
     "coverage": "CI=true npx jest --coverage --detectOpenHandles --forceExit"
   },
   "jest": {
@@ -59,7 +59,6 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
-    "cypress": "^5.2.0",
     "eslint": "^7.3.1",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
