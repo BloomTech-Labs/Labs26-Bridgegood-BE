@@ -38,7 +38,7 @@ describe('Reservation Endpoints', () => {
         datetime: '09022020:1000',
         duration: '1h',
         user_id: '57e747fc-a0d0-44af-a9ee-1b90e083a88b',
-        room_id: 'da3024b3-ad0d-4bda-b45b-7fcf129ab08a'
+        room_id: 'da3024b3-ad0d-4bda-b45b-7fcf129ab08a',
       };
 
       Reservations.findReservationByID.mockResolvedValue(structure);
@@ -67,14 +67,19 @@ describe('Reservation Endpoints', () => {
         datetime: '09022020:1000',
         duration: '1h',
         user_id: '57e747fc-a0d0-44af-a9ee-1b90e083a88b',
-        room_id: 'da3024b3-ad0d-4bda-b45b-7fcf129ab08a'
+        room_id: 'da3024b3-ad0d-4bda-b45b-7fcf129ab08a',
       };
 
       Reservations.findReservationByID.mockResolvedValue(undefined);
       Reservations.createReservation.mockResolvedValue([
-        Object.assign({ id: '36b7210f-9fb1-4941-a3f1-7672df561665' }, structure),
+        Object.assign(
+          { id: '36b7210f-9fb1-4941-a3f1-7672df561665' },
+          structure
+        ),
       ]);
-      const response = await request(server).post('/reservations').send(structure);
+      const response = await request(server)
+        .post('/reservations')
+        .send(structure);
 
       expect(response.status).toBe(200);
       expect(response.body.reservation.id).toBe(
@@ -93,7 +98,9 @@ describe('Reservation Endpoints', () => {
       Reservations.findReservationByID.mockResolvedValue(structure);
       Reservations.updateReservation.mockResolvedValue([structure]);
 
-      const response = await request(server).put('/reservations').send(structure);
+      const response = await request(server)
+        .put('/reservations')
+        .send(structure);
 
       expect(response.status).toBe(200);
       expect(response.body.reservation.duration).toBe('2h');
