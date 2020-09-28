@@ -18,7 +18,7 @@ exports.up = (knex) => {
     })
     .createTable('donations', (tbl) => {
       tbl.increments();
-      tbl.string('amount');
+      tbl.string('amount').notNullable();
       tbl
         .integer('user_id')
         .unsigned()
