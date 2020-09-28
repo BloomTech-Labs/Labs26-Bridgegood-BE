@@ -73,9 +73,7 @@ describe('Donation Endpoints', () => {
           structure
         ),
       ]);
-      const response = await request(server)
-        .post('/donations')
-        .send(structure);
+      const response = await request(server).post('/donations').send(structure);
 
       expect(response.status).toBe(200);
       expect(response.body.donation.id).toBe(
