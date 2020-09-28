@@ -63,7 +63,7 @@ describe('User Endpoints', () => {
     });
   });
 
-  describe('POST /user', () => {
+  describe('POST /', () => {
     it('should return 200 when user is created', async () => {
       const user = {
         first_name: 'John',
@@ -88,7 +88,7 @@ describe('User Endpoints', () => {
     });
   });
 
-  describe('PUT /user', () => {
+  describe('PUT /:id', () => {
     it('should return 200 when user is updated', async () => {
       const user = {
         id: 'd22b9b36-f699-4f46-bd01-6918772b4f52',
@@ -105,7 +105,7 @@ describe('User Endpoints', () => {
     });
   });
 
-  describe('DELETE /user', () => {
+  describe('DELETE /:id', () => {
     it('should return 200 when user is deleted ', async () => {
       Users.removeUser.mockResolvedValue(
         'd22b9b36-f699-4f46-bd01-6918772b4f52'

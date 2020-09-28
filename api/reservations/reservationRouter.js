@@ -157,7 +157,7 @@ router.get('/:id', authRequired, function (req, res) {
  *                  type: string
  *                  description: A message about request's result.
  *                  example: Reservation successfully created and added.
- *                user:
+ *                reservation:
  *                  $ref: '#/components/schemas/Reservation'
  */
 router.post('/', authRequired, async (req, res) => {
@@ -167,7 +167,7 @@ router.post('/', authRequired, async (req, res) => {
     try {
       await Reservations.findReservationByID(id).then(async (usr) => {
         if (usr == undefined) {
-          // User not found so lets insert it
+          // Reservation not found so lets insert it
           await Reservations.createReservation(reservation).then(
             (reservation) =>
               res.status(200).json({
@@ -185,7 +185,7 @@ router.post('/', authRequired, async (req, res) => {
   } else {
     res
       .status(404)
-      .json({ message: 'There was a problem creating the user. (404)' });
+      .json({ message: 'There was a problem creating the reservation. (404)' });
   }
 });
 
@@ -220,7 +220,7 @@ router.post('/', authRequired, async (req, res) => {
  *                  type: string
  *                  description: A message about request's result.
  *                  example: Reservation successfully updated.
- *                profile:
+ *                reservation:
  *                  $ref: '#/components/schemas/Reservation'
  */
 router.put('/', authRequired, (req, res) => {
@@ -245,7 +245,7 @@ router.put('/', authRequired, (req, res) => {
       )
       .catch((err) => {
         res.status(404).json({
-          message: `Could not find profile '${id}'`,
+          message: `Could not find reservation '${id}'`,
           error: err.message,
         });
       });
@@ -278,7 +278,7 @@ router.put('/', authRequired, (req, res) => {
  *                  type: string
  *                  description: A message about the request's result.
  *                  example: Reservation '2' was deleted.
- *                profile:
+ *                reservation:
  *                  $ref: '#/components/schemas/Reservations'
  */
 router.delete('/:id', authRequired, (req, res) => {
@@ -288,7 +288,7 @@ router.delete('/:id', authRequired, (req, res) => {
       Reservations.removeReservation(reservation.id).then(() => {
         res
           .status(200)
-          .json({ message: `Profile '${id}' was deleted.`, reservation });
+          .json({ message: `Reservation '${id}' was deleted.`, reservation });
       });
     });
   } catch (err) {
