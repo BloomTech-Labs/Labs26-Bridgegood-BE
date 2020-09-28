@@ -2,7 +2,7 @@ const request = require('supertest');
 const express = require('express');
 
 const Reservations = require('../api/reservations/reservationModel');
-const ReservationsRouter = require('../api/Reservations/reservationRouter');
+const ReservationsRouter = require('../api/reservations/reservationRouter');
 
 const server = express();
 server.use(express.json());
