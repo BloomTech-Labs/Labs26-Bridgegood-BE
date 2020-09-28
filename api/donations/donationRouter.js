@@ -154,12 +154,11 @@ router.post('/', authRequired, async (req, res) => {
       await Donations.findDonationByID(id).then(async (dono) => {
         if (dono == undefined) {
           // Donation not found so lets insert it
-          await Donations.createDonation(donation).then(
-            (result) =>
-              res.status(200).json({
-                message: 'Donation successfully created.',
-                donation: result[0],
-              })
+          await Donations.createDonation(donation).then((result) =>
+            res.status(200).json({
+              message: 'Donation successfully created.',
+              donation: result[0],
+            })
           );
         } else {
           res.status(400).json({ message: 'Donation already exists.' });

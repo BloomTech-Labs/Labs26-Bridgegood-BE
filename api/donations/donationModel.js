@@ -8,13 +8,8 @@ const findDonationByID = async (id) =>
 const createDonation = async (donation) =>
   await db('donations').insert(donation).returning('*');
 const updateDonation = async (id, donation) =>
-  await db('donations')
-    .where({ id })
-    .first()
-    .update(donation)
-    .returning('*');
-const removeDonation = async (id) =>
-  await db('donations').where({ id }).del();
+  await db('donations').where({ id }).first().update(donation).returning('*');
+const removeDonation = async (id) => await db('donations').where({ id }).del();
 
 module.exports = {
   getAllDonations,
