@@ -2,7 +2,7 @@ exports.up = (knex) => {
   return knex.schema
     .createTable('roles', (tbl) => {
       tbl.increments();
-      tbl.string('name');
+      tbl.string('name').notNullable().unique();
       tbl.timestamps(true, true);
     })
     .createTable('users', (tbl) => {
@@ -11,14 +11,22 @@ exports.up = (knex) => {
       tbl.string('last_name').notNullable();
       tbl.string('school').notNullable();
       tbl.string('bg_username').notNullable().unique();
-      tbl.string('email').notNullable().unique();
+      tbl.string('profile_url').notNullable().unique();
+      tbl.integer('isLocked').notNullable().defaultTo(0);
+      tbl.integer('praises').notNullable().defaultTo(0);
+      tbl.integer('demerits').notNullable().defaultTo(0);
+      tbl.integer('user_rating').notNullable().defaultTo(0);
+      tbl.integer('visits').notNullable().defaultTo(0);
+      tbl.integer('reservations').notNullable().defaultTo(0);
       tbl.string('phone').notNullable().unique();
+      tbl.string('email').notNullable().unique();
+      tbl.index('email');
       tbl
         .integer('role_id')
         .notNullable()
         .references('id')
         .inTable('roles')
-        .onDelete('CASCADE') // do not cascade deletes
+        .onDelete('NO ACTION')
         .onUpdate('CASCADE');
       tbl.timestamps(true, true);
     })
@@ -26,24 +34,24 @@ exports.up = (knex) => {
       tbl.string('id').unique().notNullable();
       tbl.string('roomtype');
       tbl.string('time_slots_taken');
+      tbl.integer('seats').defaultTo(20).notNullable();
     })
     .createTable('donations', (tbl) => {
       tbl.string('id').unique().notNullable();
-      tbl.string('amount');
+      tbl.integer('amount').notNullable();
+      tbl.string('email');
       tbl.timestamps(true, true);
       tbl
         .string('user_id')
-        .notNullable()
         .references('id')
         .inTable('users')
-        .onDelete('CASCADE')
+        .onDelete('NO ACTION')
         .onUpdate('CASCADE');
     })
     .createTable('reservations', (tbl) => {
       tbl.string('id').unique().notNullable();
-      tbl.string('datetime');
-      tbl.string('duration');
-      tbl.timestamps(true, true);
+      tbl.string('datetime'); // Reservation time
+      tbl.string('duration'); // Duration of the Reservation
       // RoomID and UserID
       tbl
         .string('user_id')
@@ -59,6 +67,7 @@ exports.up = (knex) => {
         .inTable('rooms')
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
+      tbl.timestamps(true, true);
     });
 };
 
