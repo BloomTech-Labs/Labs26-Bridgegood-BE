@@ -23,6 +23,14 @@ const users = [...new Array(5)].map((i, idx) => {
     last_name: lastName,
     school: `Lambda School`,
     bg_username: `${firstName}-${lastName}`,
+    profile_url: `https://www.bridgegood.dev/${names[idx]
+      .replace(':', '_')
+      .toLowerCase()}`,
+    isLocked: 0,
+    praises: 0,
+    demerits: 0,
+    user_rating: 0,
+    visits: 0,
     phone: `${faker.phone.phoneNumber()}`,
     role_id: idx == 0 ? 1 : 2,
   };
