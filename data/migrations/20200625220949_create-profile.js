@@ -40,19 +40,18 @@ exports.up = (knex) => {
       tbl.string('id').unique().notNullable();
       tbl.integer('amount').notNullable();
       tbl.string('email');
-      tbl.timestamps(true, true);
       tbl
-        .string('user_id')
-        .references('id')
-        .inTable('users')
-        .onDelete('NO ACTION')
-        .onUpdate('CASCADE');
+      .string('user_id')
+      .references('id')
+      .inTable('users')
+      .onDelete('NO ACTION')
+      .onUpdate('CASCADE');
+      tbl.timestamps(true, true);
     })
     .createTable('reservations', (tbl) => {
       tbl.string('id').unique().notNullable();
       tbl.string('datetime'); // Reservation time
       tbl.string('duration'); // Duration of the Reservation
-      // RoomID and UserID
       tbl
         .string('user_id')
         .notNullable()
@@ -67,6 +66,12 @@ exports.up = (knex) => {
         .inTable('rooms')
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
+        tbl
+          .string('donation_id')
+          .references('id')
+          .inTable('donations')
+          .onDelete('SET NULL')
+          .onUpdate('CASCADE');
       tbl.timestamps(true, true);
     });
 };
