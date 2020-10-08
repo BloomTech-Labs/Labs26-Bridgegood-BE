@@ -78,7 +78,7 @@ const updateUser = (id, user) =>
 const removeUser = async (id) => await db('users').where({ id }).del();
 
 const findOrCreateUser = async (userObj) => {
-  const foundUser = await findUserByID(userObj.id).then((user) => user);
+  const foundUser = await findUserByFilter({ email: userObj.email }).then((user) => user);
   if (foundUser) {
     return foundUser;
   } else {
