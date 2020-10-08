@@ -17,6 +17,7 @@ exports.seed = function (knex) {
           datetime: '09022020:1400',
           duration: '1h',
           user_id: 'd22b9b36-f699-4f46-bd01-6918772b4f59',
+          donation_id: 'f497c3b7-01ef-4612-840e-e7f3ffc687d3',
           room_id: 'da3024b3-ad0d-4bda-b45b-7fcf129ab08a',
         },
         {
