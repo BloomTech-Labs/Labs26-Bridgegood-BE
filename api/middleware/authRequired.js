@@ -6,9 +6,13 @@ const oktaJwtVerifier = new OktaJwtVerifier(oktaVerifierConfig.config);
 
 const makeUserObj = (claims) => {
   return {
-    id: claims.sub,
+    first_name: claims.name.split(' ')[0],
+    last_name: claims.name.split(' ')[1],
+    school: '',
+    bg_username: '',
+    profile_url: '',
+    phone: '',
     email: claims.email,
-    name: claims.name,
   };
 };
 /**
@@ -20,14 +24,11 @@ const authRequired = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization || '';
     const match = authHeader.match(/Bearer (.+)/);
-
-    if (!match) throw new Error('Invalid Authorization Token.');
-
+    if (!match) throw new Error(authHeader);
     const token = match[1];
     oktaJwtVerifier
       .verifyAccessToken(token, oktaVerifierConfig.expectedAudience)
       .then(async (data) => {
-        console.log(data);
         const jwtUserObj = makeUserObj(data.claims);
         const user = await Users.findOrCreateUser(jwtUserObj);
         if (user) {
