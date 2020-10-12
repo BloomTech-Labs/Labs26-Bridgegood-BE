@@ -10,14 +10,25 @@ const router = express.Router();
  *    User:
  *      type: object
  *      required:
+ *        - id
  *        - first_name
  *        - last_name
  *        - school
  *        - bg_username
+ *        - profile_url
+ *        - isLocked
+ *        - praises
+ *        - demerits
+ *        - user_rating
+ *        - visits
+ *        - reservations
+ *        - role_id
  *        - phone
  *        - email
- *        - password
  *      properties:
+ *        id:
+ *          type: string
+ *          description: User's UUID.
  *        first_name:
  *          type: string
  *          description: The first name of the user.
@@ -30,23 +41,59 @@ const router = express.Router();
  *        bg_username:
  *          type: string
  *          description: The BridgeGood username that the user already holds on the primary website.
+ *        profile_url:
+ *          type: string
+ *          description: The profile URL for the user's bg_username on the primary BridgeGood website.
  *        email:
  *          type: string
  *          description: The user's e-mail address.
  *        phone:
  *          type: string
  *          description: The user's phone number.
- *        password:
- *          type: string
- *          description: The user account password.
+ *        isLocked:
+ *          type: boolean
+ *          description: Determines if user's account is locked.
+ *        praises:
+ *          type: integer
+ *          description: Number of praises the user has received.
+ *        demerits:
+ *          type: integer
+ *          description: Number of demerits the user has received.
+ *        user_rating:
+ *          type: integer
+ *          description: The sum of the user's praises minus demerits.
+ *        visits:
+ *          type: integer
+ *          description: Number of check-ins.
+ *        reservations:
+ *          type: integer
+ *          description: Number of reservations made.
+ *        role_id:
+ *          type: integer
+ *          description: Foreign key to user's role.
+ *        created_at:
+ *          type: integer
+ *          description: Timestamp of when the user was created.
+ *        updated_at:
+ *          type: integer
+ *          description: Timestamp of when the user was last updated.
  *      example:
- *        first_name: 'Shannan'
- *        last_name: 'Roe'
- *        school: 'Lambda School'
- *        bg_username: 'ShannanRoe1928'
- *        email: 'Lambda@School.com'
+ *        id: '8f8464f7-c548-440d-95ac-6e64a277e405'
+ *        role_id: 2
+ *        first_name: 'Ana'
+ *        last_name: 'Carillo'
+ *        school: 'Merritt Community College'
+ *        bg_username: 'ana_carillo'
+ *        profile_url: 'https://www.bridgegood.dev/ana_carillo'
+ *        email: 'llama001@maildrop.cc'
  *        phone: '6510000000'
- *        password: 'Strong!PasswordH3R3'
+ *        visits: 15
+ *        reservations: 17
+ *        praises: 5
+ *        demerits: 1
+ *        isLocked: false       
+ *        created_at: '2020-10-08 16:22:07.65868+00'
+ *        updated_at: '2020-10-08 16:22:07.65868+00'
  *
  * /users:
  *  get:
@@ -66,22 +113,38 @@ const router = express.Router();
  *              items:
  *                $ref: '#/components/schemas/User'
  *              example:
- *                - id: '1'
+ *                - id: '0d4556c0-3f87-4a30-af62-bf10ab64afa6'
  *                  first_name: 'Alexander'
  *                  last_name: 'Besse'
- *                  school: 'Lambda School'
- *                  bg_username: 'AlexanderBesse2491'
- *                  email: 'Lambda@School.com'
+ *                  school: 'Laney College'
+ *                  bg_username: 'alexander_besse'
+ *                  profile_url: 'https://www.bridgegood.dev/alexander_besse'
+ *                  email: 'alexander_besse@maildrop.cc'
  *                  phone: '6510000000'
+ *                  isLocked: 0,
+ *                  praises: 0,
+ *                  demerits: 0,
+ *                  user_rating: 0,
+ *                  visits: 0,
+ *                  reservation: 0,
  *                  created_at: '2020-09-08 20:41:29.183465+00'
- *                - id: '2'
- *                  first_name: 'Shannan'
- *                  last_name: 'Roe'
- *                  school: 'Lambda School'
- *                  bg_username: 'ShannanRoe1928'
- *                  email: 'Lambda@School.com'
- *                  phone: '6510000000'
+ *                  updated_at: '2020-09-08 20:41:29.183465+00'
+ *                - id: '33fc3167-0905-4ee2-aed6-bedeaceeb79a'
+ *                  first_name: 'Ana'
+ *                  last_name: 'Carillo'
+ *                  school: 'California College of the Arts'
+ *                  bg_username: 'ana_carillo'
+ *                  profile_url: 'https://www.bridgegood.dev/ana_carillo'
+ *                  email: 'ana_carillo@maildrop.cc'
+ *                  phone: '2180000000'
+ *                  isLocked: 0,
+ *                  praises: 0,
+ *                  demerits: 0,
+ *                  user_rating: 0,
+ *                  visits: 0,
+ *                  reservation: 0,
  *                  created_at: '2020-09-08 20:41:29.183465+00'
+ *                  updated_at: '2020-09-08 20:41:29.183465+00'
  *      401:
  *        $ref: '#/components/responses/UnauthorizedError'
  *      403:
@@ -104,9 +167,9 @@ router.get('/', authRequired, function (req, res) {
  *    userid:
  *      name: id
  *      in: path
- *      description: ID of the user to return.
+ *      description: UUID of the user to return.
  *      required: true
- *      example: 1
+ *      example: '33fc3167-0905-4ee2-aed6-bedeaceeb79a'
  *      schema:
  *        type: string
  *
