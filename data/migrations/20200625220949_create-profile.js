@@ -41,11 +41,11 @@ exports.up = (knex) => {
       tbl.integer('amount').notNullable();
       tbl.string('email');
       tbl
-      .string('user_id')
-      .references('id')
-      .inTable('users')
-      .onDelete('NO ACTION')
-      .onUpdate('CASCADE');
+        .string('user_id')
+        .references('id')
+        .inTable('users')
+        .onDelete('NO ACTION')
+        .onUpdate('CASCADE');
       tbl.timestamps(true, true);
     })
     .createTable('reservations', (tbl) => {

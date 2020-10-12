@@ -91,7 +91,7 @@ const router = express.Router();
  *        reservations: 17
  *        praises: 5
  *        demerits: 1
- *        isLocked: false       
+ *        isLocked: false
  *        created_at: '2020-10-08 16:22:07.65868+00'
  *        updated_at: '2020-10-08 16:22:07.65868+00'
  *
