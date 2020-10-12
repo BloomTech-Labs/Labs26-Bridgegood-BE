@@ -66,12 +66,12 @@ exports.up = (knex) => {
         .inTable('rooms')
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
-        tbl
-          .string('donation_id')
-          .references('id')
-          .inTable('donations')
-          .onDelete('SET NULL')
-          .onUpdate('CASCADE');
+      tbl
+        .string('donation_id')
+        .references('id')
+        .inTable('donations')
+        .onDelete('SET NULL')
+        .onUpdate('CASCADE');
       tbl.timestamps(true, true);
     });
 };

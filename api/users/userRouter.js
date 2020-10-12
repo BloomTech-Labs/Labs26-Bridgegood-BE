@@ -193,7 +193,7 @@ router.get('/', authRequired, function (req, res) {
  *      401:
  *        $ref: '#/components/responses/UnauthorizedError'
  *      404:
- *        description: 'User not found'
+ *        $ref: '#/components/responses/NotFound'
  */
 router.get('/:id', authRequired, function (req, res) {
   const id = String(req.params.id);
@@ -275,7 +275,7 @@ router.post('/', authRequired, async (req, res) => {
 
 /**
  * @swagger
- * /users:
+ * /users/{id}:
  *  put:
  *    summary: Update a user.
  *    security:
