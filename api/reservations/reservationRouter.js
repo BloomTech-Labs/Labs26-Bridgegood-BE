@@ -10,11 +10,15 @@ const router = express.Router();
  *    Reservation:
  *      type: object
  *      required:
+ *        - id
  *        - datetime
  *        - duration
  *        - user_id
  *        - room_id
  *      properties:
+ *        id:
+ *          type: string
+ *          description: UUID of the reservation.
  *        datetime:
  *          type: string
  *          description: The date:time of the starting time.
@@ -27,11 +31,15 @@ const router = express.Router();
  *        room_id:
  *          type: number
  *          description: ID of the room being reserved.
+ *        donation_id:
+ *          type: string
+ *          description: Foreign key to a donation, if user donated during reservation. Defaults to null if donation was not made.
  *      example:
  *        datetime: '09122020:1000'
  *        duration: '1hr'
  *        user_id: 1
  *        room_id: 2
+ *        donation_id: 'd43167f1-f711-4dbb-b550-8f473d059105'
  *
  * /reservations:
  *  get:
@@ -55,10 +63,12 @@ const router = express.Router();
  *                  duration: '1hr'
  *                  user_id: 1
  *                  room_id: 2
+ *                  donation_id: 'd43167f1-f711-4dbb-b550-8f473d059105'
  *                - datetime: '09102020:1100'
  *                  duration: '1hr'
  *                  user_id: 2
  *                  room_id: 1
+ *                  donation_id: null
  *      401:
  *        $ref: '#/components/responses/UnauthorizedError'
  *      403:
@@ -107,7 +117,7 @@ router.get('/', authRequired, function (req, res) {
  *      401:
  *        $ref: '#/components/responses/UnauthorizedError'
  *      404:
- *        description: 'Reservation not found'
+ *        $ref: '#/components/responses/NotFound'
  */
 router.get('/:id', authRequired, function (req, res) {
   const id = String(req.params.id);
@@ -116,7 +126,7 @@ router.get('/:id', authRequired, function (req, res) {
       if (reservation) {
         res.status(200).json(reservation);
       } else {
-        res.status(404).json({ error: 'ReservationNotFound' });
+        res.status(404).json({ error: 'Reservation Not Found' });
       }
     })
     .catch((err) => {
@@ -145,7 +155,7 @@ router.get('/:id', authRequired, function (req, res) {
  *      401:
  *        $ref: '#/components/responses/UnauthorizedError'
  *      404:
- *        description: 'Reservation not found.'
+ *        $ref: '#/components/responses/NotFound'
  *      200:
  *        description: Reservation successfully created and added.
  *        content:

@@ -10,12 +10,18 @@ const router = express.Router();
  *    Donation:
  *      type: object
  *      required:
+ *        - id
  *        - amount
- *        - user_id
  *      properties:
+ *        id:
+ *          type: string
+ *          description: UUID of the donation.
  *        amount:
  *          type: string
  *          description: The amount of the donation, ex. "12.00"
+ *        email:
+ *          type: string
+ *          description: E-mail to be stored if the user donates while not logged in.
  *        user_id:
  *          type: string
  *          description: The UUID of the user who donated.

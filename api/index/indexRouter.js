@@ -12,7 +12,7 @@ var router = express.Router();
  *      - application/json
  *    responses:
  *      200:
- *        description: Returns up status.
+ *        description: Returns up status and current timestamp.
  *        content:
  *          application/json:
  *            schema:
@@ -23,6 +23,9 @@ var router = express.Router();
  *                api:
  *                  type: boolean
  *                  example: true
+ *                timestamp:
+ *                  type: number
+ *                  example: 1602272983985
  */
 router.get('/', function (req, res) {
   res.status(200).json({ api: 'up', timestamp: Date.now() });

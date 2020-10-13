@@ -57,7 +57,7 @@ describe('Reservation Endpoints', () => {
       );
 
       expect(response.status).toBe(404);
-      expect(response.body.error).toBe('ReservationNotFound');
+      expect(response.body.error).toBe('Reservation Not Found');
     });
   });
 

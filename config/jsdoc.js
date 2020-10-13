@@ -49,7 +49,7 @@ module.exports = {
                   message: {
                     type: 'string',
                     description: 'A message about the result',
-                    example: 'Not Found',
+                    example: 'User was not found.',
                   },
                 },
               },
