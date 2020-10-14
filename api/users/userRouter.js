@@ -247,30 +247,45 @@ router.get('/:id', authRequired, function (req, res) {
  *                  $ref: '#/components/schemas/User'
  */
 router.post('/', authRequired, async (req, res) => {
-  const user = req.body;
-  if (user) {
-    const id = user.id || 0;
-    try {
-      await Users.findUserByID(id).then(async (usr) => {
-        if (usr == undefined) {
-          // User not found so lets insert it
-          await Users.createUser(user).then((user) =>
-            res
-              .status(200)
-              .json({ message: 'User successfully created.', user: user[0] })
-          );
-        } else {
-          res.status(400).json({ message: 'User already exists.' });
-        }
-      });
-    } catch ({ message }) {
-      res.status(500).json({ message });
-    }
-  } else {
-    res
-      .status(404)
-      .json({ message: 'There was a problem creating the user. (404)' });
-  }
+  const user = req.user;
+  const result = await Users.findOrCreateUserBy({
+    email: user,
+  });
+
+  if (!result)
+    res.status(500).json({
+      message: 'Could not complete POST request.',
+    });
+  else
+    res.status(201).json({
+      user: result,
+    });
+  // if (user) {
+  //   try {
+  //     console.log("Hello?")
+  //     await Users.findUserByFilter({
+  //       email: user
+  //     }).then(async (usr) => {
+  //       console.log(usr)
+  //       if (!usr) {
+  //         // User not found so lets insert it
+  //         await Users.createUser(user).then((user) =>
+  //           res
+  //             .status(200)
+  //             .json({ message: 'User successfully created.', user: user[0] })
+  //         );
+  //       } else {
+  //         res.status(400).json({ message: 'User already exists.' });
+  //       }
+  //     });
+  //   } catch ({ message }) {
+  //     res.status(500).json({ message });
+  //   }
+  // } else {
+  //   res
+  //     .status(404)
+  //     .json({ message: 'There was a problem creating the user. (404)' });
+  // }
 });
 
 /**

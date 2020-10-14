@@ -3,6 +3,7 @@ const express = require('express');
 
 const Users = require('../api/users/userModel');
 const UsersRouter = require('../api/users/userRouter');
+const singleUserRoute = require('../api/users/singleUserRoute');
 
 const server = express();
 server.use(express.json());
@@ -10,13 +11,37 @@ server.use(express.json());
 jest.mock('../api/users/userModel.js');
 // Mock the auth middleware completely -- Skip over it.
 jest.mock('../api/middleware/authRequired.js', () =>
-  jest.fn((req, res, next) => next())
+  jest.fn((req, res, next) => {
+    req.user = 'llama001@maildrop.cc';
+    next();
+  })
 );
 
 describe('User Endpoints', () => {
   beforeAll(() => {
-    server.use(['/user', '/users'], UsersRouter);
+    server.use(['/user'], singleUserRoute);
+    server.use(['/users'], UsersRouter);
     jest.clearAllMocks();
+  });
+
+  describe('GET / - Single User', () => {
+    it('should return 200', async () => {
+      const user = {
+        id: 'd22b9b36-f699-4f46-bd01-6918772b4f59',
+        first_name: 'Alexander',
+        last_name: 'Besse',
+        school: 'Lambda School',
+        bg_username: 'Alexander-Besse',
+        email: 'llama001@maildrop.cc',
+        phone: '(468) 807-4643',
+        role_id: 2,
+      };
+      Users.findUserByFilter.mockResolvedValue([user]);
+      Users.findOrCreateUserBy.mockResolvedValue([user]);
+      const response = await request(server).get('/user');
+      expect(response.status).toBe(200);
+      expect(response.body.user).toMatchObject(user);
+    });
   });
 
   describe('GET /', () => {
@@ -66,25 +91,24 @@ describe('User Endpoints', () => {
   describe('POST /', () => {
     it('should return 200 when user is created', async () => {
       const user = {
-        first_name: 'John',
-        last_name: 'Doe',
-        email: 'johndoe@lambdaschool.com',
+        id: 'd22b9b36-f699-4f46-bd01-6918772b4f59',
+        first_name: 'Alexander',
+        last_name: 'Besse',
         school: 'Lambda School',
-        bg_username: 'John-Doe',
+        profile_url: 'somesite.com',
+        bg_username: 'Alexander-Besse',
+        email: 'llama001@maildrop.cc',
         phone: '(468) 807-4643',
         role_id: 2,
+        demerits: 0,
+        praises: 0,
+        user_rating: 0,
+        isLocked: false,
       };
-      Users.findUserByID.mockResolvedValue(undefined);
-      Users.createUser.mockResolvedValue([
-        Object.assign({ id: 'd22b9b36-f699-4f46-bd01-6918772b4f52' }, user),
-      ]);
+      Users.findOrCreateUserBy.mockResolvedValue(user);
       const response = await request(server).post('/users').send(user);
-
-      expect(response.status).toBe(200);
-      expect(response.body.user.id).toBe(
-        'd22b9b36-f699-4f46-bd01-6918772b4f52'
-      );
-      expect(Users.createUser.mock.calls.length).toBe(1);
+      expect(response.status).toBe(201);
+      expect(response.body.user).toMatchObject(user);
     });
   });
 
@@ -97,7 +121,7 @@ describe('User Endpoints', () => {
       Users.findUserByID.mockResolvedValue(user);
       Users.updateUser.mockResolvedValue([user]);
 
-      const response = await request(server).put('/user').send(user);
+      const response = await request(server).put('/users').send(user);
 
       expect(response.status).toBe(200);
       expect(response.body.user.name).toBe('John Smith');
@@ -111,7 +135,7 @@ describe('User Endpoints', () => {
         'd22b9b36-f699-4f46-bd01-6918772b4f52'
       );
       const response = await request(server).delete(
-        '/user/d22b9b36-f699-4f46-bd01-6918772b4f52'
+        '/users/d22b9b36-f699-4f46-bd01-6918772b4f52'
       );
 
       expect(response.status).toBe(200);
