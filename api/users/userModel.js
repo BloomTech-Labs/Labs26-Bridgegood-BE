@@ -50,12 +50,16 @@ const findOrCreateUserBy = async (userObj) => {
         switch (type) {
           case 'str':
             insert[name] = '';
+            break;
           case 'bool':
             insert[name] = false;
+            break;
           case 'num':
             insert[name] = 0;
+            break;
           default:
             insert[name] = '';
+            break;
         }
         continue;
       } else continue;
