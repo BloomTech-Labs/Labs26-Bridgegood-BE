@@ -2,44 +2,17 @@ const db = require('../../data/db-config');
 const { v4: uuidv4 } = require('uuid');
 
 const getAllUsers = async () =>
-  await db('users').select(
-    'id',
-    'first_name',
-    'last_name',
-    'school',
-    'bg_username',
-    'email',
-    'phone',
-    'created_at'
-  );
+  await db('users').select('*');
 
 const findUserByFilter = async (filter) =>
   await db('users')
     .where(filter)
-    .select(
-      'id',
-      'first_name',
-      'last_name',
-      'school',
-      'bg_username',
-      'email',
-      'phone',
-      'created_at'
-    );
+    .select('*');
 
 const findUserByID = async (id) =>
   await db('users')
     .where({ id })
-    .select(
-      'id',
-      'first_name',
-      'last_name',
-      'school',
-      'bg_username',
-      'email',
-      'phone',
-      'created_at'
-    )
+    .select('*')
     .first();
 
 const createUser = async (user) =>
@@ -48,43 +21,55 @@ const createUser = async (user) =>
       ...user,
       id: uuidv4(),
     })
-    .returning([
-      'id',
-      'first_name',
-      'last_name',
-      'school',
-      'bg_username',
-      'email',
-      'phone',
-      'created_at',
-    ]);
+    .returning('*');
 
 const updateUser = (id, user) =>
   db('users')
     .where({ id })
     .first()
     .update(user)
-    .returning([
-      'id',
-      'first_name',
-      'last_name',
-      'school',
-      'bg_username',
-      'email',
-      'phone',
-      'created_at',
-    ]);
+    .returning('*');
 
 const removeUser = async (id) => await db('users').where({ id }).del();
 
-const findOrCreateUser = async (userObj) => {
-  const foundUser = await findUserByFilter({ email: userObj.email }).then(
+const findOrCreateUserBy = async (userObj) => {
+  const foundUser = await findUserByFilter(userObj.findBy).then(
     (user) => user
   );
   if (foundUser) {
     return foundUser;
   } else {
-    return await createUser(userObj).then((newUser) => {
+    let insert = {...userObj.insert};
+    if(!insert.first_name || !insert.last_name || !insert.email) throw Error("User object must include a minimum of first name, last name, and e-mail. All other values can be defaulted by function.");
+    const otherField = [
+      'school-str',
+      'bg_username-str',
+      'profile_url-str',
+      'isLocked-bool',
+      'praises-num',
+      'demerits-num',
+      'user_rating-num',
+      'visits-num',
+      'reservations-num',
+      'phone-str',
+    ];
+    for(let field in otherField){
+      const [ name, type ] = field.split('-');
+      if(!insert[name]){
+        switch(type){
+          case 'str':
+            insert[name] = '';
+          case 'bool':
+            insert[name] = false;
+          case 'num':
+            insert[name] = 0;
+          default:
+            insert[name] = '';
+        }
+        continue;
+      } else continue;
+    }
+    return await createUser(insert).then((newUser) => {
       return newUser ? newUser[0] : null;
     });
   }
@@ -97,5 +82,5 @@ module.exports = {
   createUser,
   updateUser,
   removeUser,
-  findOrCreateUser,
+  findOrCreateUserBy,
 };

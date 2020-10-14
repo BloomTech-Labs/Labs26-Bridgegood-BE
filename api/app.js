@@ -20,6 +20,7 @@ const swaggerUIOptions = {
 
 //###[  Routers ]###
 const indexRouter = require('./index/indexRouter');
+const singleUserRoute = require('./users/singleUserRoute');
 const userRouter = require('./users/userRouter');
 const reservationRouter = require('./reservations/reservationRouter');
 const donationsRouter = require('./donations/donationRouter');
@@ -50,7 +51,8 @@ app.use(cookieParser());
 
 // application routes
 app.use('/', indexRouter);
-app.use(['/user', '/users'], userRouter);
+app.use(['/user'], singleUserRoute);
+app.use(['/users'], userRouter);
 app.use(['/reservation', '/reservations'], reservationRouter);
 app.use(['/donation', '/donations'], donationsRouter);
 
