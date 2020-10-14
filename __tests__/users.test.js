@@ -35,7 +35,7 @@ describe('User Endpoints', () => {
         email: 'llama001@maildrop.cc',
         phone: '(468) 807-4643',
         role_id: 2,
-      }
+      };
       Users.findUserByFilter.mockResolvedValue([user]);
       Users.findOrCreateUserBy.mockResolvedValue([user]);
       const response = await request(server).get('/user');
@@ -105,10 +105,10 @@ describe('User Endpoints', () => {
         user_rating: 0,
         isLocked: false,
       };
-      Users.findOrCreateUserBy.mockResolvedValue(user)
+      Users.findOrCreateUserBy.mockResolvedValue(user);
       const response = await request(server).post('/users').send(user);
       expect(response.status).toBe(201);
-      expect(response.body.user).toMatchObject(user)
+      expect(response.body.user).toMatchObject(user);
     });
   });
 

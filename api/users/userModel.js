@@ -1,19 +1,13 @@
 const db = require('../../data/db-config');
 const { v4: uuidv4 } = require('uuid');
 
-const getAllUsers = async () =>
-  await db('users').select('*');
+const getAllUsers = async () => await db('users').select('*');
 
 const findUserByFilter = async (filter) =>
-  await db('users')
-    .where(filter)
-    .select('*');
+  await db('users').where(filter).select('*');
 
 const findUserByID = async (id) =>
-  await db('users')
-    .where({ id })
-    .select('*')
-    .first();
+  await db('users').where({ id }).select('*').first();
 
 const createUser = async (user) =>
   db('users')
@@ -24,23 +18,20 @@ const createUser = async (user) =>
     .returning('*');
 
 const updateUser = (id, user) =>
-  db('users')
-    .where({ id })
-    .first()
-    .update(user)
-    .returning('*');
+  db('users').where({ id }).first().update(user).returning('*');
 
 const removeUser = async (id) => await db('users').where({ id }).del();
 
 const findOrCreateUserBy = async (userObj) => {
-  const foundUser = await findUserByFilter(userObj.findBy).then(
-    (user) => user
-  );
+  const foundUser = await findUserByFilter(userObj.findBy).then((user) => user);
   if (foundUser) {
     return foundUser;
   } else {
-    let insert = {...userObj.insert};
-    if(!insert.first_name || !insert.last_name || !insert.email) throw Error("User object must include a minimum of first name, last name, and e-mail. All other values can be defaulted by function.");
+    let insert = { ...userObj.insert };
+    if (!insert.first_name || !insert.last_name || !insert.email)
+      throw Error(
+        'User object must include a minimum of first name, last name, and e-mail. All other values can be defaulted by function.'
+      );
     const otherField = [
       'school-str',
       'bg_username-str',
@@ -53,10 +44,10 @@ const findOrCreateUserBy = async (userObj) => {
       'reservations-num',
       'phone-str',
     ];
-    for(let field in otherField){
-      const [ name, type ] = field.split('-');
-      if(!insert[name]){
-        switch(type){
+    for (let field in otherField) {
+      const [name, type] = field.split('-');
+      if (!insert[name]) {
+        switch (type) {
           case 'str':
             insert[name] = '';
           case 'bool':

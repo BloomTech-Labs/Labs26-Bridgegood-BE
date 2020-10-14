@@ -55,15 +55,15 @@ router.get('/', authRequired, async function (req, res) {
       error: 'A currently authenicated user was not found.',
     });
   else {
-    let record = await Users.findUserByFilter({ email: user }); 
-    if(!record) {
+    let record = await Users.findUserByFilter({ email: user });
+    if (!record) {
       record = Users.findOrCreateUser({
-        email: user
+        email: user,
       });
     }
     return res.status(200).json({
-      user: record[0]
-    })
+      user: record[0],
+    });
   }
 });
 

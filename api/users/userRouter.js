@@ -249,15 +249,17 @@ router.get('/:id', authRequired, function (req, res) {
 router.post('/', authRequired, async (req, res) => {
   const user = req.user;
   const result = await Users.findOrCreateUserBy({
-    email: user
+    email: user,
   });
 
-  if(!result) res.status(500).json({
-    message: "Could not complete POST request."
-  })
-  else res.status(201).json({
-    user: result
-  }) 
+  if (!result)
+    res.status(500).json({
+      message: 'Could not complete POST request.',
+    });
+  else
+    res.status(201).json({
+      user: result,
+    });
   // if (user) {
   //   try {
   //     console.log("Hello?")
