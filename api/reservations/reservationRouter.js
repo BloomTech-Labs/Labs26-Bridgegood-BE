@@ -174,27 +174,28 @@ router.get('/:id', authRequired, function (req, res) {
 router.post('/', authRequired, async (req, res) => {
   // Get information about the user.
   let reservation;
-  let user; 
-  
+  let user;
+
   try {
     user = await Users.findUserByFilter({ email: req.user });
-    if(!user) return res.status(404).json({
-      message: 'User making reservation was not found.'
-    });
+    if (!user)
+      return res.status(404).json({
+        message: 'User making reservation was not found.',
+      });
 
     reservation = await Reservations.createReservation({
       ...req.body.reservation,
-      user_id: user.id
+      user_id: user.id,
     });
 
     return res.status(201).json({
       reservation,
-    })
+    });
   } catch (error) {
     console.error(error.message);
     return res.status(400).json({
       message: 'An error occured while making a reservation.',
-    })
+    });
   }
 });
 
