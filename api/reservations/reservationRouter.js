@@ -1,6 +1,7 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const Reservations = require('./reservationModel');
+const Users = require('../users/userModel');
 const router = express.Router();
 
 /**
@@ -171,31 +172,29 @@ router.get('/:id', authRequired, function (req, res) {
  *                  $ref: '#/components/schemas/Reservation'
  */
 router.post('/', authRequired, async (req, res) => {
-  const reservation = req.body;
-  if (reservation) {
-    const id = reservation.id || 0;
-    try {
-      await Reservations.findReservationByID(id).then(async (usr) => {
-        if (usr == undefined) {
-          // Reservation not found so lets insert it
-          await Reservations.createReservation(reservation).then(
-            (reservation) =>
-              res.status(200).json({
-                message: 'Reservation successfully created.',
-                reservation: reservation[0],
-              })
-          );
-        } else {
-          res.status(400).json({ message: 'Reservation already exists.' });
-        }
-      });
-    } catch ({ message }) {
-      res.status(500).json({ message });
-    }
-  } else {
-    res
-      .status(404)
-      .json({ message: 'There was a problem creating the reservation. (404)' });
+  // Get information about the user.
+  let reservation;
+  let user; 
+  
+  try {
+    user = await Users.findUserByFilter({ email: req.user });
+    if(!user) return res.status(404).json({
+      message: 'User making reservation was not found.'
+    });
+
+    reservation = await Reservations.createReservation({
+      ...req.body.reservation,
+      user_id: user.id
+    });
+
+    return res.status(201).json({
+      reservation,
+    })
+  } catch (error) {
+    console.error(error.message);
+    return res.status(400).json({
+      message: 'An error occured while making a reservation.',
+    })
   }
 });
 
