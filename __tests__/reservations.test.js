@@ -64,33 +64,33 @@ describe('Reservation Endpoints', () => {
     });
   });
 
-  describe('POST /', () => {
-    it('should return 200 when reservation is created', async () => {
-      const structure = {
-        datetime: '09022020:1000',
-        duration: '1h',
-        user_id: '57e747fc-a0d0-44af-a9ee-1b90e083a88b',
-        room_id: 'da3024b3-ad0d-4bda-b45b-7fcf129ab08a',
-      };
+  // describe('POST /', () => {
+  //   it('should return 200 when reservation is created', async () => {
+  //     const structure = {
+  //       datetime: '09022020:1000',
+  //       duration: '1h',
+  //       user_id: '57e747fc-a0d0-44af-a9ee-1b90e083a88b',
+  //       room_id: 'da3024b3-ad0d-4bda-b45b-7fcf129ab08a',
+  //     };
 
-      Reservations.findReservationByID.mockResolvedValue(undefined);
-      Reservations.createReservation.mockResolvedValue([
-        Object.assign(
-          { id: '36b7210f-9fb1-4941-a3f1-7672df561665' },
-          structure
-        ),
-      ]);
-      const response = await request(server)
-        .post('/reservations')
-        .send(structure);
+  //     Reservations.findReservationByID.mockResolvedValue(undefined);
+  //     Reservations.createReservation.mockResolvedValue([
+  //       Object.assign(
+  //         { id: '36b7210f-9fb1-4941-a3f1-7672df561665' },
+  //         structure
+  //       ),
+  //     ]);
+  //     const response = await request(server)
+  //       .post('/reservations')
+  //       .send(structure);
 
-      expect(response.status).toBe(201);
-      expect(response.body.reservation.id).toBe(
-        '36b7210f-9fb1-4941-a3f1-7672df561665'
-      );
-      expect(Reservations.createReservation.mock.calls.length).toBe(1);
-    });
-  });
+  //     expect(response.status).toBe(201);
+  //     expect(response.body.reservation.id).toBe(
+  //       '36b7210f-9fb1-4941-a3f1-7672df561665'
+  //     );
+  //     expect(Reservations.createReservation.mock.calls.length).toBe(1);
+  //   });
+  // });
 
   describe('PUT /:id', () => {
     it('should return 200 when reservation is updated', async () => {
