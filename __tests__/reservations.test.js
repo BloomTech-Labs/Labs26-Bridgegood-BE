@@ -11,7 +11,10 @@ jest.mock('../api/reservations/reservationModel.js');
 
 // Mock the auth middleware completely -- Skip over it.
 jest.mock('../api/middleware/authRequired.js', () =>
-  jest.fn((req, res, next) => next())
+  jest.fn((req, res, next) => {
+    req.user = 'llama001@maildrop.cc';
+    next();
+  })
 );
 
 describe('Reservation Endpoints', () => {
@@ -81,7 +84,7 @@ describe('Reservation Endpoints', () => {
         .post('/reservations')
         .send(structure);
 
-      expect(response.status).toBe(200);
+      expect(response.status).toBe(201);
       expect(response.body.reservation.id).toBe(
         '36b7210f-9fb1-4941-a3f1-7672df561665'
       );

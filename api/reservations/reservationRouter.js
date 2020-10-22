@@ -189,7 +189,7 @@ router.post('/', authRequired, async (req, res) => {
     });
 
     return res.status(201).json({
-      reservation,
+      reservation: reservation[0],
     });
   } catch (error) {
     console.error(error.message);
