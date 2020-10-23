@@ -173,18 +173,15 @@ router.get('/:id', authRequired, function (req, res) {
  */
 router.post('/', authRequired, async (req, res) => {
   // Get information about the user.
-  let reservation;
-  let user;
-
   try {
-    user = await Users.findUserByFilter({ email: req.user });
+    const users = await Users.findUserByFilter({ email: req.user });
+    const user = users[0];
     if (!user)
       return res.status(404).json({
         message: 'User making reservation was not found.',
       });
-
-    reservation = await Reservations.createReservation({
-      ...req.body.reservation,
+    const reservation = await Reservations.createReservation({
+      ...req.body,
       user_id: user.id,
     });
 
